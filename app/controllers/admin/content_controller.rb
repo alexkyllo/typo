@@ -112,7 +112,14 @@ class Admin::ContentController < Admin::BaseController
     end
     render :text => nil
   end
-
+  def merge
+    @current_content = Content.find_by_id(params[:id])
+    @input_content = Content.find_by_id(params[:merge_with])
+    @merged_content_body = @current_content.body + " " + @input_content.body
+    @merged_content = Content.create!(:type => "Article", :title => @current_content.title, :author => @current_content.author, :body => @merged_content_body)
+    flash[:notice] = _("The articles were merged successfully.")
+    redirect_to :action => 'index'
+  end
   protected
 
   def get_fresh_or_existing_draft_for_article
@@ -240,4 +247,5 @@ class Admin::ContentController < Admin::BaseController
   def setup_resources
     @resources = Resource.by_created_at
   end
+  
 end
