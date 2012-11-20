@@ -12,7 +12,13 @@ Feature: Merge Articles
     When I follow "Edit"
     Then I should be on the edit page for article 1
     And I should see "Merge"
-    
+  
+  Scenario: The merge form should not appear on the admin content new page
+    Given I am on the admin content page
+    When I follow "New Article"
+    Then I should be on the new article page
+    And I should not see "Merge"
+  
   Scenario: Merge two articles
     Given I am on the edit page for article 1
     When I fill in "merge_with" with "3"

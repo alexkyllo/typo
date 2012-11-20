@@ -20,6 +20,7 @@ module NavigationHelpers
 
 		when /^the edit page for article (.*)$/i
 		  "/admin/content/edit/#{$1}"
+		
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

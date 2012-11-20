@@ -74,9 +74,10 @@ class AccountsController < ApplicationController
       @user = User.find(:first, :conditions => ["login = ? or email = ?", params[:user][:login], params[:user][:login]])
 
       if @user
-        @user.password = generate_password
+        new_password = generate_password
+        @user.password = new_password
         @user.save
-        flash[:notice] = _("An email has been successfully sent to your address with your new password")
+        flash[:notice] = _("An email has been successfully sent to your address with your new password, which is: #{new_password}")
         redirect_to :action => 'login'
       else
         flash[:error] = _("Oops, something wrong just happened")

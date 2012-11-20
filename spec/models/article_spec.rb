@@ -630,5 +630,36 @@ describe Article do
     end
 
   end
+  describe "#merge_with" do
+    context "when valid params given" do
+     
+      before(:each) do
+        @article = Factory.create(:article)
+        @merge_with_article = Factory.create(:article)
+        @commenta = Factory.create(:comment)
+        @commentb = Factory.create(:comment)
+        @article.comments << @commenta
+        @merge_with_article.comments << @commentb
+      end
+      
+      it "should return an article with both articles' bodies concatenated" do
+        article = @article.merge_with(@merge_with_article)
+        article.body.should == (@article.body + "\n\n" + other.body)
+      end
+      it "should return an article with the first article's title" do
+        article = @article.merge_with(@merge_with_article)
+        article.title.should == @article.title
+      end
+      it "should return an article with the first article's author" do
+        article = @article.merge_with(@merge_with_article)
+        article.author.should == @article.author
+      end
+      it "should return an article with both comments' articles" do
+        article = @article.merge_with(@merge_with_article)
+        article.comments[0].should == commenta
+        article.comments[1].should == commentb
+      end
+    end
+  end
 end
 

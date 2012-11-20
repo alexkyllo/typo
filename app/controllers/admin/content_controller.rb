@@ -113,13 +113,23 @@ class Admin::ContentController < Admin::BaseController
     render :text => nil
   end
   def merge
-    @current_content = Content.find_by_id(params[:id])
-    @input_content = Content.find_by_id(params[:merge_with])
-    @merged_content_body = @current_content.body + " " + @input_content.body
-    @merged_content = Content.create!(:type => "Article", :title => @current_content.title, :author => @current_content.author, :body => @merged_content_body)
-    flash[:notice] = _("The articles were merged successfully.")
-    redirect_to :action => 'index'
+		id = params[:id]
+    id = params[:article][:id] if params[:article] && params[:article][:id]
+    merge_with_id = params[:merge_with]
+    @article1 = Article.find_by_id(id)
+    @article2 = Article.find_by_id(merge_with_id)
+    if @article1.merge_with(merge_with_id).save
+      @article2.reload.destroy
+      flash[:notice] = _("The articles were merged successfully.")
+      redirect_to :action => 'index'
+      return
+    else
+       flash[:error] = _("Oops! These articles could not be merged.")
+       redirect_to :action => 'edit', :id => id
+       return
+    end
   end
+  
   protected
 
   def get_fresh_or_existing_draft_for_article

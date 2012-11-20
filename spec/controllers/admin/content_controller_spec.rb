@@ -606,7 +606,27 @@ describe Admin::ContentController do
         response.body.should == '<ul class="unstyled" id="autocomplete"><li>bar</li><li>bazz</li></ul>'
       end
     end
-
+   
+    describe 'merge action' do
+      
+      before :each do
+      @article1 = Factory(:article, :user => @user, :title => "Hello, World!", :body => "This is article 1.")
+      @article2 = Factory(:article, :user => @user, :title => "Goodbye, World!", :body => "This is article 2.")
+      end
+      it "should" do
+        pending
+      end
+      it "should" do
+        pending
+      end
+      it "should" do
+        pending
+      end
+      it "should" do
+        pending
+      end
+    end
+    
   end
 
   describe 'with publisher connection' do
@@ -671,4 +691,5 @@ describe Admin::ContentController do
 
     end
   end
+
 end
