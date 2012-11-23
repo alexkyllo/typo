@@ -5,7 +5,7 @@
 
 
 <% end %>
-<%unless params[:action] == "new" %>
+<%unless (params[:action] == "new" || current_user.name != 'admin')%>
 <h4>Merge Articles</h4>
 <%= form_tag({:controller => "admin/content", :action => "merge", :id => params[:id]}, :method => "put", :class => 'article') do %>
   

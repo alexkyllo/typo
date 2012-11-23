@@ -607,25 +607,13 @@ describe Admin::ContentController do
       end
     end
    
-    describe 'merge action' do
+   # describe 'merge action' do
       
-      before :each do
-      @article1 = Factory(:article, :user => @user, :title => "Hello, World!", :body => "This is article 1.")
-      @article2 = Factory(:article, :user => @user, :title => "Goodbye, World!", :body => "This is article 2.")
-      end
-      it "should" do
-        pending
-      end
-      it "should" do
-        pending
-      end
-      it "should" do
-        pending
-      end
-      it "should" do
-        pending
-      end
-    end
+   #   before :each do
+   #   @article1 = Factory(:article, :user => @user, :title => "Hello, World!", :body => "This is article 1.")
+   #   @article2 = Factory(:article, :user => @user, :title => "Goodbye, World!", :body => "This is article 2.")
+   #   end
+   # end
     
   end
 

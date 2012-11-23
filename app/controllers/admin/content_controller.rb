@@ -113,6 +113,10 @@ class Admin::ContentController < Admin::BaseController
     render :text => nil
   end
   def merge
+    if current_user.name != 'admin'
+       flash[:error] = _("Oops! You do not have permission to do that.")
+       redirect_to :action => 'edit', :id => id
+    end
 		id = params[:id]
     id = params[:article][:id] if params[:article] && params[:article][:id]
     merge_with_id = params[:merge_with]

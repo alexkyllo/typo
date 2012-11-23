@@ -41,6 +41,13 @@ Given /^the blog is set up$/ do
                 :profile_id => 1,
                 :name => 'admin',
                 :state => 'active'})
+  User.create!({:id => 2,
+                :login => 'publisher',
+                :password => 'bbbbbbbb',
+                :email => 'jim@snow.com',
+                :profile_id => 2,
+                :name => 'publisher',
+                :state => 'active'})                           
 end
 
 And /^I am logged into the admin panel$/ do
@@ -53,6 +60,59 @@ And /^I am logged into the admin panel$/ do
   else
     assert page.has_content?('Login successful')
   end
+end
+
+And /^I am logged into the publisher panel$/ do
+  visit '/accounts/login'
+  fill_in 'user_login', :with => 'publisher'
+  fill_in 'user_password', :with => 'bbbbbbbb'
+  click_button 'Login'
+  if page.respond_to? :should
+    page.should have_content('Login successful')
+  else
+    assert page.has_content?('Login successful')
+  end
+end
+
+And /^as (.*) I have published article "([^"]*)" with content "([^"]*)"$/ do |author, title,content|
+  user_id = User.find_by_name(author).id
+  article = Article.create!(:title => title,:body => content, :allow_comments => true, :allow_pings => true, :author => author, :user_id => user_id, :post_type => "read", :published => true, :settings => {"password"=>nil}, :state => "published", :text_filter_id => 5, :type => "Article")
+  article.body.should == content
+end
+
+And /^article "([^"]*)" has comment "([^"]*)"$/ do |title,comment|
+  article = Article.find_by_title(title)
+  Comment.create!(:title => comment, :body => comment, :author => 'admin', :user_id => 1, :type => "Comment", :article_id => article.id)
+end
+
+When /^I follow the Edit link for article "(.*?)"$/ do |title|
+  id = Article.find_by_title(title).id
+  visit "/admin/content/edit/#{id}"
+end
+
+When /^I follow the Show link for article "(.*?)"$/ do |title|
+  article = Article.find_by_title(title)
+  article.should_not == nil
+  visit article.short_url
+end
+
+When /^I fill in "(.*?)" with the ID of article "(.*?)"$/ do |field, title|
+  value = Article.find_by_title(title).id
+  fill_in(field, :with => value)
+end
+
+Then /^article "(.*?)" should have body "(.*?)"$/ do |title, body|
+  Article.find_by_title(title).body should == body
+end
+
+
+Then /^article "(.*?)" should have comment "(.*?)"$/ do |title, comment|
+  id = Article.find_by_title(title).id
+  id.should_not == nil
+  comment = Comment.find_by_body(comment)
+  comment.should_not == nil
+  comment.article_id.should_not == nil
+  comment.article_id.should == id
 end
 
 
