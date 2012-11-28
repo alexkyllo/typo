@@ -85,6 +85,17 @@ And /^article "([^"]*)" has comment "([^"]*)"$/ do |title,comment|
   Comment.create!(:title => comment, :body => comment, :author => 'admin', :user_id => 1, :type => "Comment", :article_id => article.id)
 end
 
+And /^I have added category "([^"]*)" with description "([^"]*)"$/ do |name, description| 
+  category = Category.create!(:name => name, :description => description)
+  category.name.should == name
+  category.description.should == description
+end
+
+When /^I follow the Edit link for category "([^"]*)"$/ do |name| 
+  id = Category.find_by_name(name).id
+  visit "/admin/categories/edit/#{id}"
+end
+
 When /^I follow the Edit link for article "(.*?)"$/ do |title|
   id = Article.find_by_title(title).id
   visit "/admin/content/edit/#{id}"

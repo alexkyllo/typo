@@ -27,3 +27,12 @@ Feature: Edit Categories
     Then I should be on the edit categories page
     And I should see "Chunky Bacon"
     
+  Scenario: Editing an existing category
+    Given I am on the edit categories page
+    And I have added category "Chunky Bacon" with description "Chunky Bacon! Chunky Bacon!"
+    When I follow the Edit link for category "Chunky Bacon"
+    And I fill in "Description" with "The bacon is not chunky enough."
+    And I press "Save"
+    Then I should be on the edit categories page
+    And I should see "The bacon is not chunky enough."
+    

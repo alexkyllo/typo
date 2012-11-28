@@ -57,4 +57,6 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'capybara'
   gem 'ZenTest'
+  gem 'rcov', '0.9.11'
+  gem 'metric_fu'
 end
